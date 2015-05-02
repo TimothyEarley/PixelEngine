@@ -1,0 +1,38 @@
+package de.earley.pixelengine.game.util;
+
+/**
+ * Stores all the needed values for the game
+ */
+public class GameSettings {
+
+	/**
+	 * Nanoseconds between updates
+	 */
+	private int deltaUpdate;
+
+	/**
+	 * If game is running to slowly, make sure we actually render from time to time
+	 */
+	public int maxUpdatesBeforeRender;
+
+	/**
+	 * If true, should render when not focused
+	 */
+	public boolean alwaysRender;
+
+	public GameSettings() {
+		// defaults
+		setUPS(60);
+		alwaysRender = false;
+		maxUpdatesBeforeRender = 60;
+	}
+
+	public void setUPS(int ups) {
+		deltaUpdate = 1000000000 / ups;
+	}
+
+	public int getDeltaUpdate() {
+		return deltaUpdate;
+	}
+
+}
