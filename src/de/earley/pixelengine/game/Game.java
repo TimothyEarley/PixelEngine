@@ -1,8 +1,9 @@
 package de.earley.pixelengine.game;
 
 import de.earley.pixelengine.game.util.GameSettings;
-import de.earley.pixelengine.window.Screen;
+import de.earley.pixelengine.window.JFrameWindow;
 import de.earley.pixelengine.window.Window;
+import de.earley.pixelengine.window.render.Screen;
 
 /**
  * Base class for every game
@@ -22,7 +23,7 @@ public abstract class Game implements Runnable {
 	/**
 	 * The settings for the game instance
 	 */
-	private GameSettings gameSettings;
+	protected GameSettings gameSettings;
 
 	/**
 	 * Indicates, wether the main loop is running
@@ -38,14 +39,6 @@ public abstract class Game implements Runnable {
 		this.gameSettings = gameSettings;
 
 		gameThread = new Thread(this, "GameThread");
-	}
-
-	public void setSettings(GameSettings gameSettings) {
-		this.gameSettings = gameSettings;
-	}
-
-	public GameSettings getSettings() {
-		return gameSettings;
 	}
 
 	public void start() {
@@ -69,43 +62,53 @@ public abstract class Game implements Runnable {
 			}
 
 			// DEBUG
-			// boolean rendered = false;
+			 boolean rendered = false;
 			if (updates != 0) {
-				render(window.getScreen());
+				window.render(this);
 				// DEBUG
-				// rendered = true;
+				 rendered = true;
 			}
 
 			// DEBUG
-			// showUPSAndFPS(loopTimer, updates, rendered);
+			 showUPSAndFPS(loopTimer, updates, rendered);
 		}
 		exit();
 	}
 
 	// DEBUG
-	/*
-	 * private int totalUpdates, totalFrames;
-	 * private void showUPSAndFPS(LoopTimer loopTimer, int updates, boolean rendered) {
-	 * totalUpdates += updates;
-	 * totalFrames += (rendered) ? 1 : 0;
-	 * if (loopTimer.getTotalTime() >= 1000000000L) {
-	 * double mult = (1000000000 / (double) loopTimer.getTotalTime());
-	 * System.out.println("UPS: " + totalUpdates * mult + "; FPS: " + totalFrames * mult);
-	 * loopTimer.resetTotalTime();
-	 * totalUpdates = 0;
-	 * totalFrames = 0;
-	 * }
-	 * }
-	 */
+
+	private int totalUpdates, totalFrames;
+
+	private void showUPSAndFPS(LoopTimer loopTimer, int updates, boolean rendered) {
+		totalUpdates += updates;
+		totalFrames += (rendered) ? 1 : 0;
+		if (loopTimer.getTotalTime() >= 1000000000L) {
+			double mult = (1000000000 / (double) loopTimer.getTotalTime());
+//			System.out.println("UPS: " + totalUpdates * mult + "; FPS: " + totalFrames * mult);
+			if (window instanceof JFrameWindow)
+				((JFrameWindow) window).changeTitle("UPS: " + totalUpdates * mult + "; FPS: " + totalFrames * mult);
+			loopTimer.resetTotalTime();
+			totalUpdates = 0;
+			totalFrames = 0;
+		}
+	}
+
 
 	private void updateAll(int delta, Window window) {
-		window.getInput().poll();
 		update(delta, window);
+		// reset input
+		window.getInput().poll();
 	}
 
 	protected abstract void update(int delta, Window window);
 
-	protected abstract void render(Screen screen);
+	/**
+	 * Main render
+	 * 
+	 * @param screen
+	 *            to render on
+	 */
+	public abstract void render(Screen screen);
 
 	protected void init() {
 	}

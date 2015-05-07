@@ -13,7 +13,6 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	private Vector2f mouse = new Vector2f();
 	private boolean[] button = new boolean[MouseInfo.getNumberOfButtons()];
 	private boolean[] buttonClick = new boolean[MouseInfo.getNumberOfButtons()];
-	
 
 	public void poll() {
 		for (int i = 0; i < buttonClick.length; i++) {
@@ -24,7 +23,15 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	public Vector2f getMouse() {
 		return mouse.copy();
 	}
-	
+
+	public boolean didButtonClick(int buttonNumber) {
+		if (Range.isInRangeExclusive(buttonNumber, -1, buttonClick.length)) {
+			return buttonClick[buttonNumber];
+		} else {
+			return false;
+		}
+	}
+
 	public boolean isButtonDown(int buttonNumber) {
 		if (Range.isInRangeExclusive(buttonNumber, -1, button.length)) {
 			return button[buttonNumber];
@@ -67,6 +74,5 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
-
 
 }
