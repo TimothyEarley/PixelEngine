@@ -1,7 +1,6 @@
 package de.earley.pixelengine.game;
 
 import de.earley.pixelengine.game.util.GameSettings;
-import de.earley.pixelengine.window.JFrameWindow;
 import de.earley.pixelengine.window.Window;
 import de.earley.pixelengine.window.render.Screen;
 
@@ -55,9 +54,9 @@ public abstract class Game implements Runnable {
 		while (running) {
 			updates = 0;
 			loopTimer.loop();
-			while (loopTimer.getDeltaLastUpdate() >= 0 && updates < gameSettings.maxUpdatesBeforeRender) {
+			while (loopTimer.getUpdateCountdown() >= 0 && updates < gameSettings.maxUpdatesBeforeRender) {
 				updates++;
-				updateAll(loopTimer.getDelta(), window);
+				updateAll(loopTimer.getTimeSinceLastUpdate(), window);
 				loopTimer.didUpdate(gameSettings.getDeltaUpdate());
 			}
 
@@ -85,8 +84,7 @@ public abstract class Game implements Runnable {
 		if (loopTimer.getTotalTime() >= 1000000000L) {
 			double mult = (1000000000 / (double) loopTimer.getTotalTime());
 //			System.out.println("UPS: " + totalUpdates * mult + "; FPS: " + totalFrames * mult);
-			if (window instanceof JFrameWindow)
-				((JFrameWindow) window).changeTitle("UPS: " + totalUpdates * mult + "; FPS: " + totalFrames * mult);
+			window.changeTitle("UPS: " + totalUpdates * mult + "; FPS: " + totalFrames * mult);
 			loopTimer.resetTotalTime();
 			totalUpdates = 0;
 			totalFrames = 0;
