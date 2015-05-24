@@ -1,19 +1,23 @@
 package de.earley.pixelengine.window.render;
 
-import de.earley.pixelengine.sprite.Sprite;
+import de.earley.pixelengine.sprite.Drawable;
 
 /**
  * In charge of rendering to the window
  */
 public class Screen {
 
-	private static final int CLEAR_COLOR = 0xff000000; // BLACK
+	public static int CLEAR_COLOR = 0xff000000; // BLACK
 
 	private int colour;
 
 	private int width, height;
 	private int xOffset, yOffset;
 	private int[] pixels;
+
+	public int MODE = MODE_ALPHA_BLENDING;
+	public static final byte MODE_NO_ALPHA_BLENDING = 0;
+	public static final byte MODE_ALPHA_BLENDING = 1;
 
 	public Screen(int width, int height) {
 		this(width, height, new int[width * height]);
@@ -48,9 +52,9 @@ public class Screen {
 		});
 	}
 
-	public void renderSprite(int x, int y, Sprite s) {
-		render(x, y, s.getWidth(), s.getHeight(), (xi, yi) -> {
-			return s.getPixel(xi, yi);
+	public void renderDrawable(int x, int y, Drawable drawable) {
+		render(x, y, drawable.getWidth(), drawable.getHeight(), (xi, yi) -> {
+			return drawable.getPixel(xi, yi);
 		});
 	}
 
@@ -65,15 +69,44 @@ public class Screen {
 				int ya = yi + y;
 				if (ya < 0 || ya >= height)
 					continue;
-				pixels[xa + ya * width] = cf.get(xi, yi);
+				pixels[xa + ya * width] = add(pixels[xa + ya * width], cf.get(xi, yi));
 			}
 		}
 	}
 
-	// Colours
+	
+	public int add(int bottom, int top) {
+		switch (MODE) {
+		case MODE_ALPHA_BLENDING:
+			int aA = (top >> 24) & 0xff;
+			int rA = (top >> 16) & 0xff;
+			int gA = (top >> 8) & 0xff;
+			int bA = (top >> 0) & 0xff;
+			
+			int aB = (bottom >> 24) & 0xff;
+			int rB = (bottom >> 16) & 0xff;
+			int gB = (bottom >> 8) & 0xff;
+			int bB = (bottom >> 0) & 0xff;
+			
+			int rOut = (rA * aA >> 8) + (rB * aB * (255 - aA) >> 16);
+			int gOut = (gA * aA >> 8) + (gB * aB * (255 - aA) >> 16);
+			int bOut = (bA * aA >> 8) + (bB * aB * (255 - aA) >> 16);
+			int aOut = aA + (aB * (255 - aA) >> 8);
+			return aOut << 24 | rOut << 16 | gOut << 8 | bOut;
 
+		case MODE_NO_ALPHA_BLENDING:
+		default:
+			return top;
+		}
+	}
+
+	/**
+	 * Adds alpha of 0xFF and sets as colour
+	 * @param colour
+	 * the base colour
+	 */
 	public void setColour(java.awt.Color colour) {
-		this.colour = colour.getRGB();
+		this.colour = 0xff000000 | colour.getRGB();
 	}
 
 	public void setColour(int colour) {
@@ -83,7 +116,7 @@ public class Screen {
 	public int getWidth() {
 		return width;
 	}
-	
+
 	public int getHeight() {
 		return height;
 	}

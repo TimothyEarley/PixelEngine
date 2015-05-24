@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Sprite {
+public class Sprite implements Drawable {
 
 	private int width, height;
 	private int[] pixels;
@@ -26,6 +26,35 @@ public class Sprite {
 			e.printStackTrace();
 			System.exit(1);
 		}
+	}
+	
+	public Sprite(int[] pixels, int width, int height) {
+		this.pixels = pixels;
+		this.height = height;
+		this.width = width;
+	}
+	
+	public Sprite(Sprite spritesheet, int x, int y, int width, int height) {
+		this.height = height;
+		this.width = width;
+		this.pixels = new int[width * height];
+		for (int xOff = 0; xOff < width; xOff++) {
+			for (int yOff = 0; yOff < height; yOff++) {
+				pixels[xOff + yOff * width] = spritesheet.pixels[xOff + x + (yOff + y) * spritesheet.width];
+			}	
+		}
+	}
+	
+	public Sprite[] slice(int width, int height) {
+		int xAmount = this.width / width;
+		int yAmount = this.height / height;
+		Sprite[] slices = new Sprite[xAmount * yAmount];
+		for (int y = 0; y < yAmount; y++) {
+			for (int x = 0; x < xAmount; x++) {
+				slices[x + y * yAmount] = new Sprite(this, x * width, y * height, width, height);
+			}	
+		}
+		return slices;
 	}
 
 	public int getWidth() {
