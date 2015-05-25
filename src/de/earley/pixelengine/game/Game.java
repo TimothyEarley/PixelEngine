@@ -2,7 +2,6 @@ package de.earley.pixelengine.game;
 
 import de.earley.pixelengine.game.util.GameSettings;
 import de.earley.pixelengine.window.Window;
-import de.earley.pixelengine.window.render.Screen;
 
 /**
  * Base class for every game
@@ -12,7 +11,7 @@ public abstract class Game implements Runnable {
 	/**
 	 * The window this game is played in
 	 */
-	private Window window;
+	protected Window window;
 
 	/**
 	 * The thread in which the game runs
@@ -99,14 +98,6 @@ public abstract class Game implements Runnable {
 	}
 
 	protected abstract void update(int delta, Window window);
-
-	/**
-	 * Main render
-	 * 
-	 * @param screen
-	 *            to render on
-	 */
-	public abstract void render(Screen screen);
 
 	protected void init() {
 	}

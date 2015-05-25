@@ -1,15 +1,29 @@
 package de.earley.pixelengine.window.render;
 
+import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Transparency;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+
 import de.earley.pixelengine.sprite.Drawable;
+import de.earley.pixelengine.util.Action;
 
 /**
  * In charge of rendering to the window
  */
-public class Screen {
+public class Screen extends Viewport {
 
 	public static int CLEAR_COLOR = 0xff000000; // BLACK
 
 	private int colour;
+	
+	/**
+	 * the image to be rendered
+	 */
+	private BufferedImage image;
 
 	private int width, height;
 	private int xOffset, yOffset;
@@ -19,14 +33,21 @@ public class Screen {
 	public static final byte MODE_NO_ALPHA_BLENDING = 0;
 	public static final byte MODE_ALPHA_BLENDING = 1;
 
-	public Screen(int width, int height) {
-		this(width, height, new int[width * height]);
+	public Screen(int width, int height, int x, int y, Action renderAction) {
+		this(width, height, width, height, x, y, renderAction);
 	}
 
-	public Screen(int width, int height, int[] pixels) {
+	public Screen(int width, int height, int renderWidth, int renderHeight, int x, int y, Action renderAction) {
+		super(renderWidth, renderHeight, x, y, renderAction);
 		this.width = width;
 		this.height = height;
-		this.pixels = pixels;
+		
+		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice device = env.getDefaultScreenDevice();
+		GraphicsConfiguration config = device.getDefaultConfiguration();
+		this.image = config.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
+
+		this.pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	}
 
 	public void clear() {
@@ -69,13 +90,17 @@ public class Screen {
 				int ya = yi + y;
 				if (ya < 0 || ya >= height)
 					continue;
-				pixels[xa + ya * width] = add(pixels[xa + ya * width], cf.get(xi, yi));
+				pixels[xa + ya * width] = addColours(pixels[xa + ya * width], cf.get(xi, yi));
 			}
 		}
 	}
+	
+	protected void renderToScreen(Graphics g, float stretch, int xOffset, int yOffset) {
+		g.drawImage(image, xPosition + xOffset, yPosition + yOffset, (int) (renderWidth * stretch), (int) (renderHeight * stretch), null);
+	}
 
 	
-	public int add(int bottom, int top) {
+	public int addColours(int bottom, int top) {
 		switch (MODE) {
 		case MODE_ALPHA_BLENDING:
 			int aA = (top >> 24) & 0xff;
@@ -111,14 +136,6 @@ public class Screen {
 
 	public void setColour(int colour) {
 		this.colour = colour;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
 	}
 
 }

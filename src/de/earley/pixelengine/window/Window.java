@@ -1,15 +1,9 @@
 package de.earley.pixelengine.window;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
-import java.awt.Transparency;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
@@ -21,6 +15,7 @@ import de.earley.pixelengine.window.input.Input;
 import de.earley.pixelengine.window.input.ResizedAction;
 import de.earley.pixelengine.window.osx.AboutHelper;
 import de.earley.pixelengine.window.render.Screen;
+import de.earley.pixelengine.window.render.Viewport;
 
 public class Window implements ResizedAction {
 
@@ -48,20 +43,20 @@ public class Window implements ResizedAction {
 	 * The actual window
 	 */
 	private JFrame frame;
-
+	
 	/**
-	 * the image to be rendered
+	 * List of all viewports to render to
 	 */
-	private BufferedImage image;
+	protected ArrayList<Viewport> viewports = new ArrayList<>(); 
+
 	
 	/**
 	 * The amount to stretch the image by
 	 */
 	private float stretch;
 
-	private int xOffset, yOffset, drawWidth, drawHeight;
-	
-	private int[] pixels;
+	private int xOffset, yOffset;
+
 
 	public Window(String title, int width, int height) {
 		this.width = width;
@@ -72,13 +67,6 @@ public class Window implements ResizedAction {
 
 		setupFrame(title);
 		setupInput();
-
-		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice device = env.getDefaultScreenDevice();
-		GraphicsConfiguration config = device.getDefaultConfiguration();
-		image = config.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
-
-		pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	}
 
 	private void setupFrame(String title) {
@@ -103,10 +91,6 @@ public class Window implements ResizedAction {
 		in.component.addListener(this);
 	}
 
-	protected Screen createScreen() {
-		return new Screen(width, height, pixels);
-	}
-
 	public void start() {
 		frame.setVisible(true);
 		frame.createBufferStrategy(2);
@@ -119,11 +103,10 @@ public class Window implements ResizedAction {
 		}
 		Graphics g = bs.getDrawGraphics();
 		// START OF RENDER
-		game.render(getScreen());
+		for (Viewport viewport : viewports) {
+			viewport.render(g, stretch, xOffset, yOffset);
+		}
 		// END OF RENDER
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, frame.getWidth(), frame.getHeight());
-		g.drawImage(image, xOffset, yOffset, drawWidth, drawHeight, null);
 		g.dispose();
 		bs.show();
 		Toolkit.getDefaultToolkit().sync();
@@ -151,21 +134,16 @@ public class Window implements ResizedAction {
 		xOffset = (int) ((windowWidth - width * stretch) / 2);
 		yOffset = (int) ((windowHeight - height * stretch) / 2);
 		yOffset += frame.getInsets().top;
-		
-		drawWidth = (int) (width * stretch);
-		drawHeight = (int) (height * stretch);
+
 	}
 	
 	
 	public Input getInput() {
 		return in;
 	}
-	
-	public Screen getScreen() {
-		if (screen == null) {
-			screen = createScreen();
-		}
-		return screen;
+
+	public void addViewport(Viewport viewport) {
+		viewports.add(viewport);
 	}
 
 }
