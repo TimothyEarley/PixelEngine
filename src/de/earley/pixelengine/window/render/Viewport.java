@@ -25,6 +25,9 @@ public abstract class Viewport {
 		renderToScreen(g, stretch, xOffset, yOffset);
 	}
 	
+	/*
+	 * xOffset and yOffset are global; local offsets need to be calced
+	 */
 	protected abstract void renderToScreen(Graphics g, float stretch, int xOffset, int yOffset);
 
 	public int getRenderWidth() {

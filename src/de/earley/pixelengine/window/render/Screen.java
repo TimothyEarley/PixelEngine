@@ -1,15 +1,12 @@
 package de.earley.pixelengine.window.render;
 
 import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 import de.earley.pixelengine.sprite.Drawable;
 import de.earley.pixelengine.util.Action;
+import de.earley.pixelengine.util.GraphicsUtil;
 
 /**
  * In charge of rendering to the window
@@ -42,10 +39,7 @@ public class Screen extends Viewport {
 		this.width = width;
 		this.height = height;
 		
-		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice device = env.getDefaultScreenDevice();
-		GraphicsConfiguration config = device.getDefaultConfiguration();
-		this.image = config.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
+		this.image = GraphicsUtil.create(width, height);
 
 		this.pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	}
@@ -96,7 +90,7 @@ public class Screen extends Viewport {
 	}
 	
 	protected void renderToScreen(Graphics g, float stretch, int xOffset, int yOffset) {
-		g.drawImage(image, xPosition + xOffset, yPosition + yOffset, (int) (renderWidth * stretch), (int) (renderHeight * stretch), null);
+		g.drawImage(image, (int) ((xPosition + xOffset) * stretch), (int) ((yPosition + yOffset) * stretch), (int) (renderWidth * stretch), (int) (renderHeight * stretch), null);
 	}
 
 	

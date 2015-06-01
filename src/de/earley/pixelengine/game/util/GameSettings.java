@@ -20,11 +20,17 @@ public class GameSettings {
 	 */
 	public boolean alwaysRender;
 
+	/**
+	 * If true, only render after new update
+	 */
+	public boolean limitFPS;
+
 	public GameSettings() {
 		// defaults
 		setUPS(60);
 		alwaysRender = false;
 		maxUpdatesBeforeRender = 60;
+		limitFPS = true;
 	}
 
 	public void setUPS(int ups) {

@@ -1,5 +1,6 @@
 package de.earley.pixelengine.window;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
@@ -99,9 +100,13 @@ public class Window implements ResizedAction {
 	public void render(Game game) {
 		BufferStrategy bs = frame.getBufferStrategy();
 		if (bs == null) {
+			frame.createBufferStrategy(2);
 			return;
 		}
 		Graphics g = bs.getDrawGraphics();
+		//TEMP DEBUG
+		g.setColor(Color.GREEN);
+		g.fillRect(0, 0, frame.getWidth(), frame.getHeight());
 		// START OF RENDER
 		for (Viewport viewport : viewports) {
 			viewport.render(g, stretch, xOffset, yOffset);
@@ -134,6 +139,8 @@ public class Window implements ResizedAction {
 		xOffset = (int) ((windowWidth - width * stretch) / 2);
 		yOffset = (int) ((windowHeight - height * stretch) / 2);
 		yOffset += frame.getInsets().top;
+		
+		System.out.println(xOffset + "; " + yOffset + "; " + stretch);
 
 	}
 	

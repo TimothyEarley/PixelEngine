@@ -1,6 +1,7 @@
 package de.earley.pixelengine.game;
 
 import de.earley.pixelengine.game.util.GameSettings;
+import de.earley.pixelengine.util.StringUtil;
 import de.earley.pixelengine.window.Window;
 
 /**
@@ -61,7 +62,7 @@ public abstract class Game implements Runnable {
 
 			// DEBUG
 			 boolean rendered = false;
-			if (updates != 0) {
+			if (!gameSettings.limitFPS || updates != 0) {
 				window.render(this);
 				// DEBUG
 				 rendered = true;
@@ -83,7 +84,7 @@ public abstract class Game implements Runnable {
 		if (loopTimer.getTotalTime() >= 1000000000L) {
 			double mult = (1000000000 / (double) loopTimer.getTotalTime());
 //			System.out.println("UPS: " + totalUpdates * mult + "; FPS: " + totalFrames * mult);
-			window.changeTitle("UPS: " + totalUpdates * mult + "; FPS: " + totalFrames * mult);
+			window.changeTitle("UPS: " + StringUtil.toDecimal(totalUpdates * mult, 2, true) + "; FPS: " + StringUtil.toDecimal(totalFrames * mult, 2, true));
 			loopTimer.resetTotalTime();
 			totalUpdates = 0;
 			totalFrames = 0;
