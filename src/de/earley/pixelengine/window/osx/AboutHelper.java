@@ -8,7 +8,7 @@ import com.apple.eawt.AppEvent.AboutEvent;
 
 public class AboutHelper implements AboutHandler {
 
-	private String msg;
+	private final String msg;
 
 	public AboutHelper(String msg) {
 		this.msg = msg;
