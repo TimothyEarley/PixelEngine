@@ -138,10 +138,9 @@ public class Window implements ResizedAction {
 		
 		xOffset = (int) ((windowWidth - width * stretch) / 2);
 		yOffset = (int) ((windowHeight - height * stretch) / 2);
-		yOffset += frame.getInsets().top;
-		
-		System.out.println(xOffset + "; " + yOffset + "; " + stretch);
+                yOffset += frame.getInsets().top;   
 
+                //TODO fix offset (recenter)
 	}
 	
 	

@@ -42,6 +42,8 @@ public class TestMain extends Game {
 		gh.getGraphics().setBackground(col);
 		gh.getGraphics().setColor(Color.WHITE);
 		gh.getGraphics().drawString("Hello World", 10, 10);
+		gh.getGraphics().setColor(Color.BLACK);
+                gh.getGraphics().drawLine(0, 0, gh.getRenderWidth(), gh.getRenderHeight());
 	}
 	
 	public TestMain(Window window) {
