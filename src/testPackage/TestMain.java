@@ -60,6 +60,7 @@ public class TestMain extends Game {
 			((Window) window).toggleFullscreen();
 	}
 
+	@SuppressWarnings("unused")
 	private static void render(Screen screen) {
 		screen.setColour(Color.red);
 		screen.fillRect(10, 10, 50, 50);

@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import de.earley.pixelengine.util.Action;
 import de.earley.pixelengine.util.GraphicsUtil;
 
 public class GraphicsHelper extends Viewport {

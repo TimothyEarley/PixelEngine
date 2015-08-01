@@ -8,8 +8,11 @@ package testPackage;
 import de.earley.pixelengine.game.Game;
 import de.earley.pixelengine.sprite.Sprite;
 import de.earley.pixelengine.window.Window;
+import de.earley.pixelengine.window.render.GraphicsHelper;
+import de.earley.pixelengine.window.render.RenderAction;
 import de.earley.pixelengine.window.render.Screen;
 import de.earley.pixelengine.window.render.Viewport;
+
 import java.awt.Color;
 
 /**
@@ -17,11 +20,9 @@ import java.awt.Color;
  * @author timmy
  */
 public class GameTest extends Game {
-    
-    Player player;
-    
+        
     public static void test() {
-        Screen screen = new Screen(1000, 1000, 0, 0, (Viewport viewport) -> {render((Screen) viewport);});
+        Screen screen = new Screen(1000, 1000, 0, 0, (viewport) -> { render((Screen) viewport); });
         Window window = new Window("Game", 500, 500);
         window.addViewport(screen);
         GameTest gameTest = new GameTest(window);
@@ -39,7 +40,6 @@ public class GameTest extends Game {
 
     @Override
     protected void init() {
-        
     }
     
     

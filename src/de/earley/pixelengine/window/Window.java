@@ -1,6 +1,5 @@
 package de.earley.pixelengine.window;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
@@ -15,7 +14,6 @@ import de.earley.pixelengine.game.Game;
 import de.earley.pixelengine.window.input.Input;
 import de.earley.pixelengine.window.input.ResizedAction;
 import de.earley.pixelengine.window.osx.AboutHelper;
-import de.earley.pixelengine.window.render.Screen;
 import de.earley.pixelengine.window.render.Viewport;
 
 public class Window implements ResizedAction {

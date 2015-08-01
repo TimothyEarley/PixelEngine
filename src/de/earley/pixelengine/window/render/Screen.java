@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 import de.earley.pixelengine.sprite.Drawable;
-import de.earley.pixelengine.util.Action;
 import de.earley.pixelengine.util.GraphicsUtil;
 
 /**
