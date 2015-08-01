@@ -13,11 +13,11 @@ public class GraphicsHelper extends Viewport {
 	private BufferedImage canvas;
 	private Graphics2D g2d;
 
-	public GraphicsHelper(int width, int height, int x, int y, Action renderAction) {
+	public GraphicsHelper(int width, int height, int x, int y, RenderAction renderAction) {
 		this(width, height, width, height, x, y, renderAction);
 	}
 	
-	public GraphicsHelper(int width, int height, int renderWidth, int renderHeight, int x, int y, Action renderAction) {
+	public GraphicsHelper(int width, int height, int renderWidth, int renderHeight, int x, int y, RenderAction renderAction) {
 		super(renderWidth, renderHeight, x, y, renderAction);
 		this.width = width;
 		this.height = height;

@@ -26,11 +26,6 @@ public class Window implements ResizedAction {
 	protected int width, height;
 	
 	/**
-	 * Can draw on this window
-	 */
-	protected Screen screen;
-	
-	/**
 	 * Receives input from this window
 	 */
 	protected Input in;
@@ -104,9 +99,6 @@ public class Window implements ResizedAction {
 			return;
 		}
 		Graphics g = bs.getDrawGraphics();
-		//TEMP DEBUG
-		g.setColor(Color.GREEN);
-		g.fillRect(0, 0, frame.getWidth(), frame.getHeight());
 		// START OF RENDER
 		for (Viewport viewport : viewports) {
 			viewport.render(g, stretch, xOffset, yOffset);

@@ -11,21 +11,20 @@ import de.earley.pixelengine.window.render.Screen;
 public class TestMain extends Game {
 
 	private static Screen screen;
-	private static GraphicsHelper gh1, gh2, gh3, gh4, gh5, gh6, gh7, gh8;
 	
 	
-	public static void main(String[] args) {
+	public static void test() {
 		Window window = new Window("Test", 1600, 900);
 //		screen = new Screen(400, 450, 800, 900, 0, 0, () -> {render(screen);});
 		
-		gh1 = new GraphicsHelper(400, 450, 0, 		0, 		() -> {renderGUI(gh1, Color.PINK);});
-		gh2 = new GraphicsHelper(400, 450, 400, 	0, 		() -> {renderGUI(gh2, Color.CYAN);});
-		gh3 = new GraphicsHelper(400, 450, 0,		450, 	() -> {renderGUI(gh3, Color.CYAN);});
-		gh4 = new GraphicsHelper(400, 450, 400, 	450, 	() -> {renderGUI(gh4, Color.PINK);});
-		gh5 = new GraphicsHelper(400, 450, 800, 	0, 		() -> {renderGUI(gh5, Color.PINK);});
-		gh6 = new GraphicsHelper(400, 450, 1200, 	0, 		() -> {renderGUI(gh6, Color.CYAN);});
-		gh7 = new GraphicsHelper(400, 450, 800, 	450, 	() -> {renderGUI(gh7, Color.CYAN);});
-		gh8 = new GraphicsHelper(400, 450, 1200, 	450, 	() -> {renderGUI(gh8, Color.PINK);});
+		GraphicsHelper gh1 = new GraphicsHelper(400, 450, 0, 	0, 	(gh) -> {renderGUI((GraphicsHelper) gh, Color.PINK);});
+		GraphicsHelper gh2 = new GraphicsHelper(400, 450, 400, 	0,      (gh) -> {renderGUI((GraphicsHelper) gh, Color.CYAN);});
+		GraphicsHelper gh3 = new GraphicsHelper(400, 450, 0,	450, 	(gh) -> {renderGUI((GraphicsHelper) gh, Color.CYAN);});
+		GraphicsHelper gh4 = new GraphicsHelper(400, 450, 400, 	450, 	(gh) -> {renderGUI((GraphicsHelper) gh, Color.PINK);});
+		GraphicsHelper gh5 = new GraphicsHelper(400, 450, 800, 	0, 	(gh) -> {renderGUI((GraphicsHelper) gh, Color.PINK);});
+		GraphicsHelper gh6 = new GraphicsHelper(400, 450, 1200, 0, 	(gh) -> {renderGUI((GraphicsHelper) gh, Color.CYAN);});
+		GraphicsHelper gh7 = new GraphicsHelper(400, 450, 800, 	450, 	(gh) -> {renderGUI((GraphicsHelper) gh, Color.CYAN);});
+		GraphicsHelper gh8 = new GraphicsHelper(400, 450, 1200, 450, 	(gh) -> {renderGUI((GraphicsHelper) gh, Color.PINK);});
 //		window.addViewport(screen);
 		window.addViewport(gh1);
 		window.addViewport(gh2);

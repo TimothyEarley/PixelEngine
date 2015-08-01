@@ -30,11 +30,11 @@ public class Screen extends Viewport {
 	public static final byte MODE_NO_ALPHA_BLENDING = 0;
 	public static final byte MODE_ALPHA_BLENDING = 1;
 
-	public Screen(int width, int height, int x, int y, Action renderAction) {
+	public Screen(int width, int height, int x, int y, RenderAction renderAction) {
 		this(width, height, width, height, x, y, renderAction);
 	}
 
-	public Screen(int width, int height, int renderWidth, int renderHeight, int x, int y, Action renderAction) {
+	public Screen(int width, int height, int renderWidth, int renderHeight, int x, int y, RenderAction renderAction) {
 		super(renderWidth, renderHeight, x, y, renderAction);
 		this.width = width;
 		this.height = height;
@@ -94,7 +94,7 @@ public class Screen extends Viewport {
 	}
 
 	
-	public int addColours(int bottom, int top) {
+	private int addColours(int bottom, int top) {
 		switch (MODE) {
 		case MODE_ALPHA_BLENDING:
 			int aA = (top >> 24) & 0xff;
