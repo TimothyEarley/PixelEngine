@@ -9,6 +9,10 @@ public class Vector2i {
 		this.y = y;
 	}
 	
+	public Vector2i() {
+	    this(0,0);
+	}
+	
 	public Vector2i(float x, float y) {
 		this((int) x, (int) y);
 	}

@@ -17,11 +17,7 @@ public class Sprite implements Drawable {
 			height = image.getHeight();
 			pixels = new int[width * height];
 			image.getRGB(0, 0, width, height, pixels, 0, width);
-		} catch (IOException e) {
-			System.err.println("Failed to load sprite!");
-			e.printStackTrace();
-			System.exit(1);
-		} catch (IllegalArgumentException e) {
+		} catch (IOException | IllegalArgumentException e) {
 			System.err.println("Failed to load sprite!");
 			e.printStackTrace();
 			System.exit(1);
@@ -57,14 +53,17 @@ public class Sprite implements Drawable {
 		return slices;
 	}
 
+	@Override
 	public int getWidth() {
 		return width;
 	}
 
+	@Override
 	public int getHeight() {
 		return height;
 	}
 
+	@Override
 	public int getPixel(int x, int y) {
 		return pixels[x + y * width];
 	}
