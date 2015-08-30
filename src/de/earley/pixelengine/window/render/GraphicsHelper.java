@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import de.earley.pixelengine.util.GraphicsUtil;
+import java.awt.Color;
 
 public class GraphicsHelper extends Viewport {
 	
@@ -22,6 +23,7 @@ public class GraphicsHelper extends Viewport {
 		this.height = height;
 		canvas = GraphicsUtil.create(width, height);
 		g2d = canvas.createGraphics();
+		g2d.setBackground(new Color(0x0, true));
 	}
 
 	
@@ -29,6 +31,7 @@ public class GraphicsHelper extends Viewport {
 	
 	@Override
 	protected void renderToScreen(Graphics g, float stretch, int xOffset, int yOffset) {
+		//TODO speed improvements
 		g.drawImage(canvas, (int) ((xPosition + xOffset) * stretch), (int) ((yPosition + yOffset) * stretch), (int) (renderWidth * stretch), (int) (renderHeight * stretch), null);
 		//reset canvas
 		g2d.clearRect(0, 0, width, height);

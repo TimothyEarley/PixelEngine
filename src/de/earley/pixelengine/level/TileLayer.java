@@ -2,6 +2,7 @@ package de.earley.pixelengine.level;
 
 import de.earley.pixelengine.sprite.SolidColourSprite;
 import de.earley.pixelengine.sprite.Sprite;
+import de.earley.pixelengine.util.Range;
 import de.earley.pixelengine.vector.Vector2f;
 import de.earley.pixelengine.vector.Vector2i;
 import de.earley.pixelengine.window.render.Screen;
@@ -66,17 +67,34 @@ public class TileLayer {
     void render(Screen screen, Vector2i offset) {
 	for (int x = 0; x < width; x++) {
 	    for (int y = 0; y < height; y++) {
-		Tile t = tileID.getOrDefault(tiles[x + y * width], getVoidTile());
-		t.render(screen, new Vector2i(x * tileWidth + offset.x, y * tileHeight + offset.y));
+		getTile(x, y).render(screen, new Vector2i(x * tileWidth + offset.x, y * tileHeight + offset.y));
 	    }
 	}
     }
 
     private Tile getVoidTile() {
 	if (voidTile == null) {
-	    voidTile = new Tile(new SolidColourSprite(0xffff00ff, tileWidth, tileHeight), false);
+	    voidTile = new Tile(new SolidColourSprite(0xffff00ff, tileWidth, tileHeight), true, "VOID_TILE");
 	}
 	return voidTile;
     }
+    
+    public int getTileWidth() {
+	return tileWidth;
+    }
+    
+    public int getTileHeight() {
+	return tileHeight;
+    }
+
+    public Tile getTile(int x, int y) {
+	if (Range.isInRangeExclusive(x, -1, width) && Range.isInRangeExclusive(y, -1, height)) {
+	    return tileID.getOrDefault(tiles[x + y * width], getVoidTile());
+	} else {
+	    return getVoidTile();
+	}
+    }
+    
+    
     
 }

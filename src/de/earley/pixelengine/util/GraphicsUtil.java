@@ -20,7 +20,7 @@ public class GraphicsUtil {
 	/**
 	 * Creates a BufferedImage based on the local graphics config
 	 * @param width of the image
-	 * @param height of the imgae
+	 * @param height of the image
 	 * @param mode the Image type
 	 * @return the newly created image
 	 */

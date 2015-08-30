@@ -37,6 +37,12 @@ public class Vector2i {
 		this.y += d;
 		return this;
 	}
+	
+	public Vector2i add(int x, int y) {
+		this.x += x;
+		this.y += y;
+		return this;
+	}
 
 	public Vector2i sub(Vector2i a) {
 		this.x -= a.x;
