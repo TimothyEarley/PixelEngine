@@ -3,11 +3,11 @@ package de.earley.pixelengine.level;
 import de.earley.pixelengine.entity.Entity;
 import de.earley.pixelengine.util.Range;
 import de.earley.pixelengine.vector.Vector2i;
+import de.earley.pixelengine.window.Window;
 import de.earley.pixelengine.window.input.Input;
 import de.earley.pixelengine.window.render.Screen;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import testPackage.TestMob;
 
 public class Level {
 
@@ -24,10 +24,10 @@ public class Level {
 	entities = new ArrayList<>();
     }
 
-    public void update(int delta , Input in) {
+    public void update(int delta , Window window) {
 	for (int i = entities.size() - 1; i >= 0; i--) {
 	    Entity e = entities.get(i);
-	    e.update(delta, in);
+	    e.update(delta, window);
 	    if (e.removed()) {
 		entities.remove(i);
 	    }

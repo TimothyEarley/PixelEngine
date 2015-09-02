@@ -11,6 +11,7 @@ import com.apple.eawt.Application;
 import com.apple.eawt.FullScreenUtilities;
 
 import de.earley.pixelengine.game.Game;
+import de.earley.pixelengine.vector.Vector2f;
 import de.earley.pixelengine.window.input.Input;
 import de.earley.pixelengine.window.input.ResizedAction;
 import de.earley.pixelengine.window.osx.AboutHelper;
@@ -142,4 +143,21 @@ public class Window implements ResizedAction {
 		viewports.add(viewport);
 	}
 
+	/**
+	 * see {@link #transformMouse}
+	 * @return 
+	 */
+	public Vector2f transformMouse() {
+	    return transformMouse(getInput().mouse.getMouse());
+	}
+
+	
+	/**
+	 * Transforms the coordinate to a system relative to the rendered image 
+	 * @param mouse
+	 * @return 
+	 */
+	public Vector2f transformMouse(Vector2f mouse) {
+	    return new Vector2f((mouse.x / stretch) - xOffset, (mouse.y / stretch) - yOffset);
+	}
 }

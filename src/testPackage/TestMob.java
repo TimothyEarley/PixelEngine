@@ -1,9 +1,11 @@
 package testPackage;
 
 import de.earley.pixelengine.entity.Mob;
+import de.earley.pixelengine.entity.Projectile;
 import de.earley.pixelengine.sprite.SolidColourSprite;
 import de.earley.pixelengine.vector.Vector2f;
 import de.earley.pixelengine.vector.Vector2i;
+import de.earley.pixelengine.window.Window;
 import de.earley.pixelengine.window.input.Input;
 import de.earley.pixelengine.window.render.Screen;
 import java.awt.Rectangle;
@@ -25,7 +27,8 @@ public class TestMob extends Mob {
     }
     
     @Override
-    public void update(int delta, Input in) {
+    public void update(int delta, Window window) {
+	Input in = window.getInput();
 	dir.x = dir.y = 0;
 	if (in.keyboard.isKeyDown(KeyEvent.VK_W))
 	    dir.y -= delta / speed;
@@ -37,6 +40,11 @@ public class TestMob extends Mob {
 	    dir.x += delta / speed;
 	
 	move(dir);
+	if (in.mouse.isButtonDown(1)) {
+		Vector2f projectileDir = window.transformMouse();
+		projectileDir.sub(485);
+		parent.add(new Projectile(position.copy().add(15), projectileDir.normalize().mult(1)));
+	}
     }
 
     @Override

@@ -4,6 +4,7 @@ import de.earley.pixelengine.level.Level;
 import de.earley.pixelengine.sprite.Drawable;
 import de.earley.pixelengine.vector.Vector2f;
 import de.earley.pixelengine.vector.Vector2i;
+import de.earley.pixelengine.window.Window;
 import de.earley.pixelengine.window.input.Input;
 import de.earley.pixelengine.window.render.Screen;
 import java.awt.geom.Rectangle2D;
@@ -14,9 +15,9 @@ public abstract class Entity {
     protected Drawable drawable;
     protected Vector2f position;
     protected Rectangle2D collissionBox;
-    protected boolean removed;
+    private boolean removed;
     
-    public abstract void update(int delta, Input in);
+    public abstract void update(int delta, Window window);
 
     public void render(Screen screen, Vector2i offset) {
         screen.renderDrawable((int) (position.x + offset.x), (int) (position.y + offset.y), drawable);
@@ -46,12 +47,26 @@ public abstract class Entity {
 	this.parent = parent;
     }
     
+    protected void bounce(Vector2f dir) {
+	if (!move(new Vector2f(dir.x, 0), false)) {
+	    dir.x *= -1;
+	}
+	if (!move(new Vector2f(0, dir.y), false)) {
+	    dir.y *= -1;
+	}
+    }
+    
+    protected boolean move(Vector2f dir) {
+	return move(dir, true);
+    }
+    
     /**
      * Attempts to move in the direction.
      * @param dir
+     * @param slide if true, the entity can slide along the axis
      * @return true if no obstacle encountered
     */
-    protected boolean move(Vector2f dir) {
+    protected boolean move(Vector2f dir, boolean slide) {
 	float length = dir.lengthSquare();
 	if (length == 0) {
 	    return true;
@@ -65,7 +80,7 @@ public abstract class Entity {
 	   return false;
 	} else {
 	    //allow sliding
-	    if (dir.x != 0 && dir.y != 0) {
+	    if (slide && dir.x != 0 && dir.y != 0) {
 		boolean moved = move(new Vector2f(dir.x, 0));
 		if (move(new Vector2f(0, dir.y))) {
 		    moved = true;
