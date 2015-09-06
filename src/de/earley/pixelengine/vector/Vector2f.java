@@ -56,6 +56,12 @@ public class Vector2f implements Serializable {
 		this.y += d;
 		return this;
 	}
+	
+	public Vector2f add(float x, float y) {
+	    this.x += x;
+	    this.y += y;
+	    return this;
+	}
 
 	public Vector2f sub(Vector2i a) {
 		this.x -= a.x;

@@ -21,7 +21,6 @@ public class Screen extends Viewport {
 	 */
 	private BufferedImage image;
 
-	private int width, height;
 	private int xOffset, yOffset;
 	private int[] pixels;
 
@@ -88,6 +87,7 @@ public class Screen extends Viewport {
 		}
 	}
 	
+	@Override
 	protected void renderToScreen(Graphics g, float stretch, int xOffset, int yOffset) {
 		g.drawImage(image, (int) ((xPosition + xOffset) * stretch), (int) ((yPosition + yOffset) * stretch), (int) (renderWidth * stretch), (int) (renderHeight * stretch), null);
 	}

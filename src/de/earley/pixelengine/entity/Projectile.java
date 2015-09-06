@@ -14,15 +14,17 @@ public class Projectile extends Entity {
 
     private long timeout;
     private Vector2f dir;
+    private int speed;
     
-    public Projectile(Vector2f pos, Vector2f dir) {
-	this.dir = dir;
+    public Projectile(Vector2f pos, Vector2f dir, int speed) {
+	this.dir = dir.normalize();
+	this.speed = speed;
 	this.position = pos;
-	int col = StaticRandom.rand.nextInt(0xffffff);
+	int col = StaticRandom.rand.nextInt(0xffffff) & 0xff00f0a0;
 	this.drawable = new SolidColourSprite(0xff000000 | col, 2, 2);
 	this.collissionBox = new Rectangle(0, 0, drawable.getWidth(), drawable.getHeight());
 	
-	this.timeout = 500000000000l;
+	this.timeout = 10 * 1000000000l;
     }
     
     
@@ -30,12 +32,11 @@ public class Projectile extends Entity {
     @Override
     public void update(int delta, Window window) {
 	timeout-=delta;
-	bounce(dir);
+	bounce(dir, delta/speed);
 	if (timeout < 0) {
 	    remove();
 	}
-    }
-    
+    }    
     
 
 }

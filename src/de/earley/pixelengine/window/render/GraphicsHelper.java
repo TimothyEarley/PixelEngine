@@ -9,7 +9,6 @@ import java.awt.Color;
 
 public class GraphicsHelper extends Viewport {
 	
-	private int width, height;
 	private BufferedImage canvas;
 	private Graphics2D g2d;
 

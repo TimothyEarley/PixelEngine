@@ -5,7 +5,6 @@ import de.earley.pixelengine.sprite.Drawable;
 import de.earley.pixelengine.vector.Vector2f;
 import de.earley.pixelengine.vector.Vector2i;
 import de.earley.pixelengine.window.Window;
-import de.earley.pixelengine.window.input.Input;
 import de.earley.pixelengine.window.render.Screen;
 import java.awt.geom.Rectangle2D;
 
@@ -20,7 +19,9 @@ public abstract class Entity {
     public abstract void update(int delta, Window window);
 
     public void render(Screen screen, Vector2i offset) {
-        screen.renderDrawable((int) (position.x + offset.x), (int) (position.y + offset.y), drawable);
+	if (drawable != null) {
+	    screen.renderDrawable((int) (position.x + offset.x), (int) (position.y + offset.y), drawable);
+	}
     }
     
     public Drawable getDrawable() {
@@ -47,13 +48,19 @@ public abstract class Entity {
 	this.parent = parent;
     }
     
-    protected void bounce(Vector2f dir) {
-	if (!move(new Vector2f(dir.x, 0), false)) {
+    protected Vector2f  bounce(Vector2f dir) {
+	return bounce(dir, 1);
+    }
+
+    
+    protected Vector2f  bounce(Vector2f dir, float speed) {
+	if (!move(new Vector2f(dir.x * speed, 0), false)) {
 	    dir.x *= -1;
 	}
-	if (!move(new Vector2f(0, dir.y), false)) {
+	if (!move(new Vector2f(0, dir.y * speed), false)) {
 	    dir.y *= -1;
 	}
+	return dir;
     }
     
     protected boolean move(Vector2f dir) {

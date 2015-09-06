@@ -33,7 +33,7 @@ public abstract class Game implements Runnable {
 		this(window, new GameSettings());
 	}
 
-	public Game(Window window, GameSettings gameSettings) {
+	public Game(Window window, GameSettings gameSettings) {	    
 		this.window = window;
 		this.gameSettings = gameSettings;
 
@@ -63,7 +63,7 @@ public abstract class Game implements Runnable {
 			// DEBUG
 			 boolean rendered = false;
 			if (!gameSettings.limitFPS || updates != 0) {
-				window.render(this);
+				window.repaint();
 				// DEBUG
 				 rendered = true;
 			}

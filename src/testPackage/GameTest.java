@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package testPackage;
 
 import de.earley.pixelengine.game.Game;
@@ -15,7 +10,8 @@ import de.earley.pixelengine.vector.Vector2i;
 import de.earley.pixelengine.window.Window;
 import de.earley.pixelengine.window.render.GraphicsHelper;
 import de.earley.pixelengine.window.render.Screen;
-import java.awt.Graphics2D;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.HashMap;
 
 /**
@@ -25,16 +21,17 @@ import java.util.HashMap;
 public class GameTest extends Game {
     
     private static Level level;
-    private static Vector2i offset;
+    public static Vector2i offset;
     private static TestMob player;
-    private static Vector2f mouse;
+    private static Vector2f mouse, screenMouse;
     
     public static void test() {
         Screen screen = new Screen(200, 200, 1000, 1000, 0, 0, (viewport) -> { render((Screen) viewport); });
 	GraphicsHelper gui = new GraphicsHelper(1000, 1000, 0, 0, (viewport) -> {renderGUI(((GraphicsHelper) viewport).getGraphics()); });
         Window window = new Window("Game", 1000, 1000);
         window.addViewport(screen);
-	//window.addViewport(gui);
+	window.addViewport(gui);
+	window.setBackground(Color.BLACK);
         GameTest gameTest = new GameTest(window);
         gameTest.start();
     }
@@ -48,8 +45,8 @@ public class GameTest extends Game {
 	offset = new Vector2i();
 	
 	HashMap<Integer, Tile> idHash = new HashMap<>();
-	idHash.put(0xffff00ff, new Tile(new SolidColourSprite(0xff00ff00, 32, 32), false, "green"));
-	idHash.put(0xffffffff, new Tile(new SolidColourSprite(0xffffffff, 32, 32), true, "white"));
+	idHash.put(0xffff00ff, new Tile(new SolidColourSprite(0xff2a2a2a, 32, 32), false, "gray"));
+	idHash.put(0xffffffff, new Tile(new SolidColourSprite(0xff0000ff, 32, 32), true, "blue"));
 	
 	int tileWidth = 32;
 	int tileHeight = 32;
@@ -58,19 +55,25 @@ public class GameTest extends Game {
 	
 	level.stepSizeSquared = 256; // 16
 	
-	player = new TestMob();
+	player = new TestMob(new Vector2f(32, 32));
 	level.add(player);
 	
+	Spawner s = new Spawner(new Vector2f(32 + 10, 32 + 10));
+//	level.add(s);
+	
 	offset = new Vector2i();
+		
     }
     
     private static void render(Screen screen) {
 	screen.clear();
 	level.render(screen, offset);
+//	screen.setColour(Color.RED);
+//	screen.fillRect((int) screenMouse.x - 2, (int) screenMouse.y - 2, 4, 4);
     }
     
-    private static void renderGUI(Graphics2D g) {
-	g.fillOval((int) mouse.x - 8, (int) mouse.y - 8, 16, 16);
+    private static void renderGUI(Graphics g) {
+//	g.fillOval((int) mouse.x - 8, (int) mouse.y - 8, 16, 16);
     }
 
     @Override
@@ -78,7 +81,8 @@ public class GameTest extends Game {
 	level.update(delta, window);
 	offset = new Vector2i().sub(player.getPosition().toVector2i());
 	offset.add(100 - player.getDrawable().getWidth()/2, 100 - player.getDrawable().getHeight()/2);
-	mouse = window.transformMouse();
+	mouse = window.transformMouse(1);
+	screenMouse = window.transformMouse(0);
     }
     
 }

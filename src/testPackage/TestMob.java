@@ -18,10 +18,11 @@ import java.awt.event.KeyEvent;
 public class TestMob extends Mob {
 
     Vector2f dir = new Vector2f();
+    int size = 8;
 
-    public TestMob() {
-	drawable = new SolidColourSprite(0xffff0000, 30, 30);
-	position = new Vector2f(1, 1);
+    public TestMob(Vector2f pos) {
+	drawable = new SolidColourSprite(0xffff0000, size, size);
+	position = pos;
 	collissionBox = new Rectangle(0, 0, drawable.getWidth(), drawable.getHeight());
 	speed = 10000000;
     }
@@ -41,9 +42,11 @@ public class TestMob extends Mob {
 	
 	move(dir);
 	if (in.mouse.isButtonDown(1)) {
-		Vector2f projectileDir = window.transformMouse();
-		projectileDir.sub(485);
-		parent.add(new Projectile(position.copy().add(15), projectileDir.normalize().mult(1)));
+		Vector2f projectileDir = window.transformMouse(0);
+		projectileDir.sub(GameTest.offset);
+		projectileDir.sub(position);
+		projectileDir.sub(size/2); // center
+		parent.add(new Projectile(position.copy().add(size/2), projectileDir, 10000000));
 	}
     }
 
