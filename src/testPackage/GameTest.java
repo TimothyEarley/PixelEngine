@@ -58,8 +58,8 @@ public class GameTest extends Game {
 	player = new TestMob(new Vector2f(32, 32));
 	level.add(player);
 	
-	Spawner s = new Spawner(new Vector2f(32 + 10, 32 + 10));
-//	level.add(s);
+	Spawner s = new Spawner(new Vector2f(32 + 16 + 10, 32 + 10));
+	level.add(s);
 	
 	offset = new Vector2i();
 		
@@ -68,6 +68,7 @@ public class GameTest extends Game {
     private static void render(Screen screen) {
 	screen.clear();
 	level.render(screen, offset);
+
 //	screen.setColour(Color.RED);
 //	screen.fillRect((int) screenMouse.x - 2, (int) screenMouse.y - 2, 4, 4);
     }

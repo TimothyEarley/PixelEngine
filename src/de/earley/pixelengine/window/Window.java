@@ -94,19 +94,13 @@ public class Window extends JPanel implements ResizedAction {
 		frame.setVisible(true);
 	}
 
-    @Override
-    protected void paintComponent(Graphics g) {
-	try {
+	@Override
+	protected void paintComponent(Graphics g) throws NullPointerException {
 	    super.paintComponent(g);
 	    for (Viewport viewport : viewports) {
 		viewport.render(g, stretch, xOffset, yOffset);
 	    }
-	} catch (Exception e) {
-	    //TODO what is going on?
-	    System.out.println("Oh No!");
 	}
-    }
-
 	public void toggleFullscreen() {
 		if (newOSX)
 			Application.getApplication().requestToggleFullScreen(frame);
@@ -183,6 +177,4 @@ public class Window extends JPanel implements ResizedAction {
 	    mouseTrans.y *= v.getHeight() / (float) v.getRenderHeight();
 	    return mouseTrans;
 	}
-	
-	
 }

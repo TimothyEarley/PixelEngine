@@ -42,13 +42,13 @@ public abstract class Game implements Runnable {
 
 	public void start() {
 		running = true;
+		init();
 		window.start();
 		gameThread.start();
 	}
 
 	@Override
 	public void run() {
-		init();
 		int updates = 0;
 		LoopTimer loopTimer = new LoopTimer();
 		while (running) {

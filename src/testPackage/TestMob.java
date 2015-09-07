@@ -3,6 +3,7 @@ package testPackage;
 import de.earley.pixelengine.entity.Mob;
 import de.earley.pixelengine.entity.Projectile;
 import de.earley.pixelengine.sprite.SolidColourSprite;
+import de.earley.pixelengine.util.StaticRandom;
 import de.earley.pixelengine.vector.Vector2f;
 import de.earley.pixelengine.vector.Vector2i;
 import de.earley.pixelengine.window.Window;
@@ -46,7 +47,7 @@ public class TestMob extends Mob {
 		projectileDir.sub(GameTest.offset);
 		projectileDir.sub(position);
 		projectileDir.sub(size/2); // center
-		parent.add(new Projectile(position.copy().add(size/2), projectileDir, 10000000));
+		parent.add(new Projectile(position.copy().add(size/2), projectileDir, 10000000, 2, (StaticRandom.rand.nextInt(0xffffff) & 0xf00050) | 0xff000000));
 	}
     }
 

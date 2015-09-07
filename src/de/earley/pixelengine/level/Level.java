@@ -42,8 +42,10 @@ public class Level {
 	for (TileLayer tileLayer : tileLayers) {
 	    tileLayer.render(screen, offset);
 	}
-	for (Entity entity : entities) {
-		entity.render(screen, offset);
+	//TODO still concurrentmodificationexception
+	for (int i = entities.size() - 1; i >= 0; i--) {
+	    Entity e = entities.get(i);
+	    e.render(screen, offset);
 	}
     }
 
