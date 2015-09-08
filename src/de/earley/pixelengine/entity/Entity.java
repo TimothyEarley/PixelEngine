@@ -6,14 +6,15 @@ import de.earley.pixelengine.vector.Vector2f;
 import de.earley.pixelengine.vector.Vector2i;
 import de.earley.pixelengine.window.Window;
 import de.earley.pixelengine.window.render.Screen;
-import java.awt.geom.Rectangle2D;
+import java.awt.Rectangle;
 
 public abstract class Entity {
 
     protected Level parent;
     protected Drawable drawable;
     protected Vector2f position;
-    protected Rectangle2D collissionBox;
+    protected boolean collidableTile, collidableEntity, collidableProjectile;
+    protected Rectangle collissionBox;
     private boolean removed;
     
     public abstract void update(int delta, Window window);
@@ -32,7 +33,7 @@ public abstract class Entity {
 	return position.copy();
     }
 
-    public Rectangle2D getCollissionBox() {
+    public Rectangle getCollissionBox() {
 	return collissionBox;
     }
 
@@ -74,6 +75,12 @@ public abstract class Entity {
      * @return true if no obstacle encountered
     */
     protected boolean move(Vector2f dir, boolean slide) {
+	
+	if (!collidableTile && !collidableEntity && !collidableProjectile) {
+	    position.add(dir);
+	    return true;
+	}
+	
 	float length = dir.lengthSquare();
 	if (length == 0) {
 	    return true;
@@ -105,5 +112,24 @@ public abstract class Entity {
 		return false;
 	    }
 	}
+    }
+
+    public boolean collidesWithTiles() {
+	return collidableTile;
+    }
+
+    public boolean collidesWithEntities() {
+	return collidableEntity;
+    }
+
+    public boolean collidesWithProjectiles() {
+	return collidableProjectile;
+    }
+
+    /**
+     * Called, when entity - entity collision happens
+     * @param other 
+     */
+    public void collide(Entity other) {
     }
 }

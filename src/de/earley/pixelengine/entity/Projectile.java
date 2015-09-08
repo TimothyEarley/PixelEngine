@@ -23,6 +23,10 @@ public class Projectile extends Entity {
 	this.collissionBox = new Rectangle(0, 0, drawable.getWidth(), drawable.getHeight());
 	
 	this.timeout = 120 * 1000000000l;
+	
+	collidableTile = true;
+	collidableEntity = true;
+	collidableProjectile = false;
     }
     
     
@@ -34,7 +38,14 @@ public class Projectile extends Entity {
 	if (timeout < 0) {
 	    remove();
 	}
-    }    
+    } 
+
+    @Override
+    public void collide(Entity other) {
+	remove();
+    }
+    
+    
     
 
 }

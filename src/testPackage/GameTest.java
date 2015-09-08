@@ -55,7 +55,7 @@ public class GameTest extends Game {
 	
 	level.stepSizeSquared = 256; // 16
 	
-	player = new TestMob(new Vector2f(32, 32));
+	player = new TestMob(new Vector2f(32 + 32, 32 + 32));
 	level.add(player);
 	
 	Spawner s = new Spawner(new Vector2f(32 + 16 + 10, 32 + 10));
