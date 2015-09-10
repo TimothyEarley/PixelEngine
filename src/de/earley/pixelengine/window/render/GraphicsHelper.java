@@ -30,7 +30,6 @@ public class GraphicsHelper extends Viewport {
 	
 	@Override
 	protected void renderToScreen(Graphics g, float stretch, int xOffset, int yOffset) {
-		//TODO speed improvements
 		g.drawImage(canvas, (int) ((xPosition + xOffset) * stretch), (int) ((yPosition + yOffset) * stretch), (int) (renderWidth * stretch), (int) (renderHeight * stretch), null);
 		//reset canvas
 		g2d.clearRect(0, 0, width, height);

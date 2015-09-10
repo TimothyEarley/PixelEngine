@@ -55,7 +55,7 @@ public class TestMain extends Game {
 	}
 
 	@Override
-	protected void update(int delta, Window window) {
+	protected void update(long delta, Window window) {
 		if (window.getInput().mouse.didButtonClick(MouseEvent.BUTTON3))
 			((Window) window).toggleFullscreen();
 	}

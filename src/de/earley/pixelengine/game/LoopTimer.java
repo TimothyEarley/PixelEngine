@@ -1,67 +1,65 @@
 package de.earley.pixelengine.game;
 
 public class LoopTimer {
-	/**
-	 * The total time from the start of the game till now
-	 */
-	private long totalTime;
-	/**
-	 * The current loop time
-	 */
-	private long nowTime;
-	/**
-	 * The last loop time;
-	 */
-	private long lastTime;
-	/**
-	 * Differenz between nowTime and lastTime
-	 */
-	private int delta;
-	/**
-	 * Counter for next update
-	 */
-	private int updateCountdown;
-	/**
-	 * Time from last update
-	 */
-	private int timeSinceLastUpdate;
-	
-	public void loop() {
-		lastTime = nowTime;
-		nowTime = System.nanoTime();
-		delta = (int) (nowTime - lastTime);
-		totalTime += delta;
-		updateCountdown += delta;
-		timeSinceLastUpdate += delta;
-	}
+    /**
+     * The total time from the start of the game till now
+     */
+    private long totalTime;
+    /**
+     * The current loop time
+     */
+    private long nowTime;
+    /**
+     * The last loop time;
+     */
+    private long lastTime;
 
-	public int getDelta() {
-		return delta;
-	}
-	
-	public void start() {
-		nowTime = System.nanoTime();
-	}
-	
-	public long getTotalTime() {
-		return totalTime;
-	}
+    /**
+     * Time at last update
+     */
+    private long lastUpdate;
 
-	public void resetTotalTime() {
-		totalTime = 0;
-	}
-	
-	public int getUpdateCountdown() {
-		return updateCountdown;
-	}
+    /**
+     * Grows over time, reduced every update
+     */
+    private long updateCounter;
+    
+    public void start() {
+	nowTime = now();
+    }
 
-	public void didUpdate(int updateTime) {
-		updateCountdown -= updateTime;
-		timeSinceLastUpdate = 0;
-	}
+    public void loop() {
+	    lastTime = nowTime;
+	    nowTime = now();
+	    long delta = nowTime - lastTime;
+	    totalTime += delta;
+	    updateCounter += delta;
+    }
 
-	public int getTimeSinceLastUpdate() {
-		return timeSinceLastUpdate;
-	}
+    public long getTotalTime() {
+	    return totalTime;
+    }
+
+    public void resetTotalTime() {
+	    totalTime = 0;
+    }
+
+    public void didUpdate(long updateTime) {
+	    lastUpdate = now();
+	    updateCounter -= updateTime;
+    }
+
+    public long getTimeSinceLastUpdate() {
+	    return now() - lastUpdate;
+    }
+
+    public long getUpdateCounter() {
+	return updateCounter;
+    }
+    
+    private long now() {
+	return System.nanoTime();
+    }
+
 }
 

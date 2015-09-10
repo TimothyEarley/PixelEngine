@@ -17,7 +17,7 @@ public abstract class Entity {
     protected Rectangle collissionBox;
     private boolean removed;
     
-    public abstract void update(int delta, Window window);
+    public abstract void update(long delta, Window window);
 
     public void render(Screen screen, Vector2i offset) {
 	if (drawable != null) {

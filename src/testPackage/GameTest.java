@@ -62,7 +62,7 @@ public class GameTest extends Game {
 	level.add(s);
 	
 	offset = new Vector2i();
-		
+			
     }
     
     private static void render(Screen screen) {
@@ -78,7 +78,7 @@ public class GameTest extends Game {
     }
 
     @Override
-    protected void update(int delta, Window window) {
+    protected void update(long delta, Window window) {
 	level.update(delta, window);
 	offset = new Vector2i().sub(player.getPosition().toVector2i());
 	offset.add(100 - player.getDrawable().getWidth()/2, 100 - player.getDrawable().getHeight()/2);

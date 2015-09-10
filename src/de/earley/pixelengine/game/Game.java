@@ -51,20 +51,22 @@ public abstract class Game implements Runnable {
 	public void run() {
 		int updates = 0;
 		LoopTimer loopTimer = new LoopTimer();
+		loopTimer.start();
 		while (running) {
 			updates = 0;
 			loopTimer.loop();
-			while (loopTimer.getUpdateCountdown() >= 0 && updates < gameSettings.maxUpdatesBeforeRender) {
+			while (loopTimer.getUpdateCounter() >= 0
+				&& updates < gameSettings.maxUpdatesBeforeRender)
+			{
 				updates++;
 				updateAll(loopTimer.getTimeSinceLastUpdate(), window);
 				loopTimer.didUpdate(gameSettings.getDeltaUpdate());
+				loopTimer.loop();
 			}
 
-			// DEBUG
-			 boolean rendered = false;
+			boolean rendered = false;
 			if (!gameSettings.limitFPS || updates != 0) {
 				window.repaint();
-				// DEBUG
 				 rendered = true;
 			}
 
@@ -83,8 +85,9 @@ public abstract class Game implements Runnable {
 		totalFrames += (rendered) ? 1 : 0;
 		if (loopTimer.getTotalTime() >= 1000000000L) {
 			double mult = (1000000000 / (double) loopTimer.getTotalTime());
-//			System.out.println("UPS: " + totalUpdates * mult + "; FPS: " + totalFrames * mult);
-			window.changeTitle("UPS: " + StringUtil.toDecimal(totalUpdates * mult, 2, true) + "; FPS: " + StringUtil.toDecimal(totalFrames * mult, 2, true));
+			String ups = StringUtil.toDecimal(totalUpdates * mult, 2, true);
+			String fps = StringUtil.toDecimal(totalFrames * mult, 2, true);
+			window.changeTitle("UPS: " + ups + "; FPS: " + fps);
 			loopTimer.resetTotalTime();
 			totalUpdates = 0;
 			totalFrames = 0;
@@ -92,13 +95,13 @@ public abstract class Game implements Runnable {
 	}
 
 
-	private void updateAll(int delta, Window window) {
-		update(delta, window);
-		// reset input
-		window.getInput().poll();
+	private void updateAll(long delta, Window window) {
+	    update(delta, window);
+	    // reset input
+	    window.getInput().poll();
 	}
 
-	protected abstract void update(int delta, Window window);
+	protected abstract void update(long delta, Window window);
 
 	protected void init() {
 	}

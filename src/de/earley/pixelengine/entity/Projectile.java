@@ -13,9 +13,9 @@ public class Projectile extends Entity {
 
     protected long timeout;
     protected Vector2f dir;
-    protected int speed;
+    protected float speed;
     
-    public Projectile(Vector2f pos, Vector2f dir, int speed, int size, int colour) {
+    public Projectile(Vector2f pos, Vector2f dir, float speed, int size, int colour) {
 	this.dir = dir.normalize();
 	this.speed = speed;
 	this.position = pos;
@@ -32,9 +32,9 @@ public class Projectile extends Entity {
     
     
     @Override
-    public void update(int delta, Window window) {
+    public void update(long delta, Window window) {
 	timeout-=delta;
-	bounce(dir, delta/speed);
+	bounce(dir, delta * speed);
 	if (timeout < 0) {
 	    remove();
 	}

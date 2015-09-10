@@ -28,7 +28,7 @@ public class Level {
 	this.projectiles = new ArrayList<>();
     }
 
-    public void update(int delta , Window window) {
+    public void update(long delta , Window window) {
 	for (int i = entities.size() - 1; i >= 0; i--) {
 	    Entity e = entities.get(i);
 	    e.update(delta, window);
