@@ -1,24 +1,17 @@
 package de.earley.pixelengine.window;
 
-import java.awt.Graphics;
-import java.awt.Toolkit;
-import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
-
-import javax.swing.JFrame;
-
 import com.apple.eawt.Application;
 import com.apple.eawt.FullScreenUtilities;
-
-import de.earley.pixelengine.game.Game;
 import de.earley.pixelengine.util.Range;
 import de.earley.pixelengine.vector.Vector2f;
 import de.earley.pixelengine.window.input.Input;
 import de.earley.pixelengine.window.input.ResizedAction;
 import de.earley.pixelengine.window.osx.AboutHelper;
 import de.earley.pixelengine.window.render.Viewport;
-import java.awt.Color;
-import javax.swing.JPanel;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
 
 public class Window extends JPanel implements ResizedAction {
 
@@ -176,5 +169,9 @@ public class Window extends JPanel implements ResizedAction {
 	    mouseTrans.x *= v.getWidth() / (float) v.getRenderWidth();
 	    mouseTrans.y *= v.getHeight() / (float) v.getRenderHeight();
 	    return mouseTrans;
+	}
+
+	public void setViewports(ArrayList<Viewport> viewports) {
+		this.viewports = viewports;
 	}
 }

@@ -4,3 +4,6 @@
 build.xml
 manifest.mf
 /build/
+# IntelliJ
+PixelEngine.iml
+.idea
