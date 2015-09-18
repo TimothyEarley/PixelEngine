@@ -27,7 +27,7 @@ public class StateBasedGame extends Game {
 	}
 
 	@Override
-	protected void update(long delta, Window window) {
+	public void update(long delta, Window window) {
 		active.update(delta, window);
 	}
 
