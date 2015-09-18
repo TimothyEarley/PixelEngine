@@ -1,21 +1,19 @@
 package de.earley.pixelengine.level;
 
 import de.earley.pixelengine.entity.Entity;
-import de.earley.pixelengine.entity.Mob;
 import de.earley.pixelengine.entity.Projectile;
 import de.earley.pixelengine.util.Range;
 import de.earley.pixelengine.vector.Vector2i;
 import de.earley.pixelengine.window.Window;
 import de.earley.pixelengine.window.render.Screen;
 import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 public class Level {
 
-    private TileLayer[] tileLayers;
-    private ArrayList<Entity> entities;
-    private ArrayList<Projectile> projectiles;
+    private final TileLayer[] tileLayers;
+    private final ArrayList<Entity> entities;
+    private final ArrayList<Projectile> projectiles;
     
     /**
      * The length of one mob step, the higher it is, the lower the precision

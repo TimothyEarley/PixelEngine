@@ -10,31 +10,32 @@ import de.earley.pixelengine.vector.Vector2i;
 import de.earley.pixelengine.window.Window;
 import de.earley.pixelengine.window.render.GraphicsHelper;
 import de.earley.pixelengine.window.render.Screen;
-
-import java.awt.*;
+import de.earley.pixelengine.window.ui.UILabelButton;
+import de.earley.pixelengine.window.ui.UIMenu;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.util.HashMap;
 
 /**
+ *
  * @author timmy
  */
 public class GameTest extends Game {
-
+    
     private static Level level;
     public static Vector2i offset;
     private static TestMob player;
-    private static Vector2f mouse, screenMouse;
-
+    private static Vector2f screenMouse;
+    private static UIMenu menu;
+    
     public static void test() {
-        Screen screen = new Screen(200, 200, 1000, 1000, 0, 0, (viewport) -> {
-            render((Screen) viewport);
-        });
-        GraphicsHelper gui = new GraphicsHelper(1000, 1000, 0, 0, (viewport) -> {
-            renderGUI(((GraphicsHelper) viewport).getGraphics());
-        });
+        Screen screen = new Screen(200, 200, 1000, 1000, 0, 0, (viewport) -> { render((Screen) viewport); });
+	GraphicsHelper gui = new GraphicsHelper(1000, 1000, 0, 0, (viewport) -> {renderGUI(((GraphicsHelper) viewport).getGraphics()); });
         Window window = new Window("Game", 1000, 1000);
         window.addViewport(screen);
-        window.addViewport(gui);
-        window.setBackground(Color.BLACK);
+	window.addViewport(gui);
+	window.setBackground(Color.BLACK);
         GameTest gameTest = new GameTest(window);
         gameTest.start();
     }
@@ -45,48 +46,53 @@ public class GameTest extends Game {
 
     @Override
     protected void init() {
-        offset = new Vector2i();
-
-        HashMap<Integer, Tile> idHash = new HashMap<>();
-        idHash.put(0xffff00ff, new Tile(new SolidColourSprite(0xff2a2a2a, 32, 32), false, "gray"));
-        idHash.put(0xffffffff, new Tile(new SolidColourSprite(0xff0000ff, 32, 32), true, "blue"));
-
-        int tileWidth = 32;
-        int tileHeight = 32;
-        TileLayer tileLayer = new TileLayer("/level.png", tileWidth, tileHeight, idHash, null);
-        level = new Level(tileLayer);
-
-        level.stepSizeSquared = 256; // 16
-
-        player = new TestMob(new Vector2f(32 + 32, 32 + 32));
-        level.add(player);
-
-        Spawner s = new Spawner(new Vector2f(32 + 16 + 10, 32 + 10));
-        level.add(s);
-
-        offset = new Vector2i();
-
+	offset = new Vector2i();
+	
+	HashMap<Integer, Tile> idHash = new HashMap<>();
+	idHash.put(0xffff00ff, new Tile(new SolidColourSprite(0xff2a2a2a, 32, 32), false, "gray"));
+	idHash.put(0xffffffff, new Tile(new SolidColourSprite(0xff0000ff, 32, 32), true, "blue"));
+	
+	int tileWidth = 32;
+	int tileHeight = 32;
+	TileLayer tileLayer = new TileLayer("/level.png", tileWidth, tileHeight, idHash, null);
+	level = new Level(tileLayer);
+	
+	level.stepSizeSquared = 256; // 16
+	
+	player = new TestMob(new Vector2f(32 + 32, 32 + 32));
+	level.add(player);
+	
+	Spawner s = new Spawner(new Vector2f(32 + 16 + 10, 32 + 10));
+	level.add(s);
+	
+	offset = new Vector2i();
+	
+	Font font = new Font("Verdana", Font.PLAIN, 50);
+	menu = new UIMenu();
+	menu.add(new UILabelButton(new Vector2i(100, 100), "test button", font, Color.RED, Color.BLACK, 10, () -> (System.out.println("Hi"))));
+			
     }
-
+    
     private static void render(Screen screen) {
-        screen.clear();
-        level.render(screen, offset);
+	screen.clear();
+	level.render(screen, offset);
 
 //	screen.setColour(Color.RED);
 //	screen.fillRect((int) screenMouse.x - 2, (int) screenMouse.y - 2, 4, 4);
     }
-
+    
     private static void renderGUI(Graphics g) {
-//	g.fillOval((int) mouse.x - 8, (int) mouse.y - 8, 16, 16);
+	menu.render(g);
     }
 
     @Override
-    protected void update(long delta, Window window) {
-        level.update(delta, window);
-        offset = new Vector2i().sub(player.getPosition().toVector2i());
-        offset.add(100 - player.getDrawable().getWidth() / 2, 100 - player.getDrawable().getHeight() / 2);
-        mouse = window.transformMouse(1);
-        screenMouse = window.transformMouse(0);
-    }
+    public void update(long delta, Window window) {
+	level.update(delta, window);
+	offset = new Vector2i().sub(player.getPosition().toVector2i());
+	offset.add(100 - player.getDrawable().getWidth()/2, 100 - player.getDrawable().getHeight()/2);
+	screenMouse = window.transformMouse(0);
 
+	menu.update(delta, window, 1);
+    }
+    
 }
