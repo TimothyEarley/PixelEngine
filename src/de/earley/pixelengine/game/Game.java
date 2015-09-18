@@ -101,7 +101,7 @@ public abstract class Game implements Runnable {
 	    window.getInput().poll();
 	}
 
-	protected abstract void update(long delta, Window window);
+	public abstract void update(long delta, Window window);
 
 	protected void init() {
 	}

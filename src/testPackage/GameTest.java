@@ -10,7 +10,10 @@ import de.earley.pixelengine.vector.Vector2i;
 import de.earley.pixelengine.window.Window;
 import de.earley.pixelengine.window.render.GraphicsHelper;
 import de.earley.pixelengine.window.render.Screen;
+import de.earley.pixelengine.window.ui.UILabelButton;
+import de.earley.pixelengine.window.ui.UIMenu;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.HashMap;
 
@@ -23,7 +26,8 @@ public class GameTest extends Game {
     private static Level level;
     public static Vector2i offset;
     private static TestMob player;
-    private static Vector2f mouse, screenMouse;
+    private static Vector2f screenMouse;
+    private static UIMenu menu;
     
     public static void test() {
         Screen screen = new Screen(200, 200, 1000, 1000, 0, 0, (viewport) -> { render((Screen) viewport); });
@@ -62,6 +66,10 @@ public class GameTest extends Game {
 	level.add(s);
 	
 	offset = new Vector2i();
+	
+	Font font = new Font("Verdana", Font.PLAIN, 50);
+	menu = new UIMenu();
+	menu.add(new UILabelButton(new Vector2i(100, 100), "test button", font, Color.RED, Color.BLACK, 10, () -> (System.out.println("Hi"))));
 			
     }
     
@@ -74,16 +82,17 @@ public class GameTest extends Game {
     }
     
     private static void renderGUI(Graphics g) {
-//	g.fillOval((int) mouse.x - 8, (int) mouse.y - 8, 16, 16);
+	menu.render(g);
     }
 
     @Override
-    protected void update(long delta, Window window) {
+    public void update(long delta, Window window) {
 	level.update(delta, window);
 	offset = new Vector2i().sub(player.getPosition().toVector2i());
 	offset.add(100 - player.getDrawable().getWidth()/2, 100 - player.getDrawable().getHeight()/2);
-	mouse = window.transformMouse(1);
 	screenMouse = window.transformMouse(0);
+
+	menu.update(delta, window, 1);
     }
     
 }
