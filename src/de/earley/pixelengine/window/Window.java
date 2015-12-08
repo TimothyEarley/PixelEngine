@@ -2,7 +2,7 @@ package de.earley.pixelengine.window;
 
 import com.apple.eawt.Application;
 import com.apple.eawt.FullScreenUtilities;
-import de.earley.pixelengine.util.Range;
+import de.earley.pixelengine.game.states.Layer;
 import de.earley.pixelengine.vector.Vector2f;
 import de.earley.pixelengine.window.input.Input;
 import de.earley.pixelengine.window.input.ResizedAction;
@@ -11,36 +11,31 @@ import de.earley.pixelengine.window.render.Viewport;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Window extends JPanel implements ResizedAction {
 
 	/**
+	 * Indicates, wether we are running OS X 10.3 or higher
+	 */
+	private static boolean newOSX;
+	/**
 	 * The dimensions of the window
 	 */
 	protected int width, height;
-	
 	/**
 	 * Receives input from this window
 	 */
 	protected Input in;
-	
-	/**
-	 * Indicates, wether we are running OS X 10.3 or higher
-	 */
-	private static boolean newOSX;
-
 	/**
 	 * The actual window
 	 */
 	private JFrame frame;
-	
-	/**
-	 * List of all viewports to render to
-	 */
-	protected ArrayList<Viewport> viewports = new ArrayList<>(); 
 
-	
+	/**
+	 * The layer to render
+	 */
+	private Layer root;
+
 	/**
 	 * The amount to stretch the image by
 	 */
@@ -50,15 +45,15 @@ public class Window extends JPanel implements ResizedAction {
 
 
 	public Window(String title, int width, int height) {
-	    this.width = width;
-	    this.height = height;
+		this.width = width;
+		this.height = height;
 
-	    String[] version = System.getProperty("os.version").split("\\.");
-	    newOSX = System.getProperty("os.name").equals("Mac OS X") && version.length >= 2 && Integer.parseInt(version[0]) >= 10 && Integer.parseInt(version[1]) >= 3;
+		String[] version = System.getProperty("os.version").split("\\.");
+		newOSX = System.getProperty("os.name").equals("Mac OS X") && version.length >= 2 && Integer.parseInt(version[0]) >= 10 && Integer.parseInt(version[1]) >= 3;
 
-	    setupFrame(title);
-	    setupInput();
-	    frame.add(this);
+		setupFrame(title);
+		setupInput();
+		frame.add(this);
 	}
 
 	private void setupFrame(String title) {
@@ -69,6 +64,7 @@ public class Window extends JPanel implements ResizedAction {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		if (newOSX) {
 			FullScreenUtilities.setWindowCanFullScreen(frame, true);
+			//noinspection ConstantConditions
 			Application.getApplication().setAboutHandler(new AboutHelper("Hello World!"));
 		}
 	}
@@ -78,8 +74,9 @@ public class Window extends JPanel implements ResizedAction {
 		frame.addKeyListener(in.keyboard);
 		frame.addMouseListener(in.mouse);
 		frame.addMouseMotionListener(in.mouse);
-		frame.addFocusListener(in.focus);
 		frame.addComponentListener(in.component);
+		frame.addFocusListener(in.focus);
+
 		in.component.addListener(this);
 	}
 
@@ -89,89 +86,67 @@ public class Window extends JPanel implements ResizedAction {
 
 	@Override
 	protected void paintComponent(Graphics g) throws NullPointerException {
-	    super.paintComponent(g);
-	    for (Viewport viewport : viewports) {
-		viewport.render(g, stretch, xOffset, yOffset);
-	    }
+		super.paintComponent(g);
+		root.render(g, stretch, xOffset, yOffset);
 	}
+
 	public void toggleFullscreen() {
 		if (newOSX)
+			//noinspection ConstantConditions,ConstantConditions
 			Application.getApplication().requestToggleFullScreen(frame);
 	}
 
 	public void changeTitle(String string) {
-	    frame.setTitle(string);
+		frame.setTitle(string);
 	}
 
 	@Override
 	public void onResize() {
-	    int windowWidth = frame.getWidth();
-	    int windowHeight = frame.getHeight();
 
-	    float maxStretchX = windowWidth / (float) width;
-	    float maxStretchY = windowHeight / (float) height;
+		int windowWidth = frame.getWidth();
+		int windowHeight = frame.getHeight();
 
-	    stretch = Math.min(maxStretchX, maxStretchY);
-		
-	    xOffset = (int) ((windowWidth - width * stretch) / 2);
-	    yOffset = (int) ((windowHeight - height * stretch) / 2);
+		float maxStretchX = windowWidth / (float) width;
+		float maxStretchY = windowHeight / (float) height;
 
-	    //TODO fix offset (recenter)
+		stretch = Math.min(maxStretchX, maxStretchY);
+
+		xOffset = (int) ((windowWidth - width * stretch) / 2);
+		yOffset = (int) ((windowHeight - height * stretch) / 2);
+
+
 	}
-	
-	
+
+
 	public Input getInput() {
 		return in;
 	}
 
-	public void addViewport(Viewport viewport) {
-		viewports.add(viewport);
+	public void setRoot(Layer root) {
+		this.root = root;
 	}
 
-	/**
-	 * see {@link #transformMouse(Vector2f)}
-	 * @return 
-	 */
-	public Vector2f transformMouse() {
-	    return transformMouse(getInput().mouse.getMouse());
-	}
-
-	
-	/**
-	 * Transforms the coordinate to a system relative to the rendered image 
-	 * @param mouse
-	 * @return 
-	 */
-	public Vector2f transformMouse(Vector2f mouse) {
-	    return new Vector2f((mouse.x / stretch) - xOffset, ((mouse.y - frame.getInsets().top) / stretch) - yOffset);
-	}
-	
-	/**
-	 * see {@link #transformMouse(Vector2f, int)}
-	 * @return 
-	 */
-	public Vector2f transformMouse(int id) {
-	    return transformMouse(getInput().mouse.getMouse(), id);
-	}
-	
 	/**
 	 * Transforms the coordinate to a system relative to the provided viewport
-	 * @param mouse
-	 * @return 
+	 *
+	 * @param v The relative viewport
+	 * @return the transformed mouse position
 	 */
-	public Vector2f transformMouse(Vector2f mouse, int id) {
-	    if (!Range.isInRangeExclusive(id, -1, viewports.size())) {
-		return transformMouse();
-	    }
-	    Viewport v = viewports.get(id);
-	    Vector2f mouseTrans = transformMouse();
-	    mouseTrans.add(v.getXPosition(), v.getYPosition());
-	    mouseTrans.x *= v.getWidth() / (float) v.getRenderWidth();
-	    mouseTrans.y *= v.getHeight() / (float) v.getRenderHeight();
-	    return mouseTrans;
+	public Vector2f transformMouse(Viewport v) {
+		Vector2f mouseTrans = transformMouse();
+		mouseTrans.sub(v.getXPosition(), v.getYPosition());
+		mouseTrans.x *= v.getWidth() / (float) v.getRenderWidth();
+		mouseTrans.y *= v.getHeight() / (float) v.getRenderHeight();
+		return mouseTrans;
 	}
 
-	public void setViewports(ArrayList<Viewport> viewports) {
-		this.viewports = viewports;
+	/**
+	 * Transforms the coordinate to a system relative to the rendered image (i.e. the intended dimensions, unscaled)
+	 *
+	 * @return the transformed mouse position
+	 */
+	private Vector2f transformMouse() {
+		Vector2f mouse = in.mouse.getMouse();
+		return new Vector2f((mouse.x / stretch) - xOffset, ((mouse.y - frame.getInsets().top) / stretch) - yOffset);
 	}
 }

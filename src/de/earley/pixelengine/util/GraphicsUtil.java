@@ -1,16 +1,15 @@
 package de.earley.pixelengine.util;
 
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class GraphicsUtil {
-	
+
 	/**
 	 * Defaults to INT_ARGB
-	 * @param width of the image
-	 * @param height of the imgae
+	 *
+	 * @param width  of the image
+	 * @param height of the image
 	 * @return the newly created image
 	 */
 	public static BufferedImage create(int width, int height) {
@@ -19,9 +18,10 @@ public class GraphicsUtil {
 
 	/**
 	 * Creates a BufferedImage based on the local graphics config
-	 * @param width of the image
+	 *
+	 * @param width  of the image
 	 * @param height of the image
-	 * @param mode the Image type
+	 * @param mode   the Image type
 	 * @return the newly created image
 	 */
 	public static BufferedImage create(int width, int height, int mode) {
@@ -30,5 +30,5 @@ public class GraphicsUtil {
 		GraphicsConfiguration config = device.getDefaultConfiguration();
 		return config.createCompatibleImage(width, height, mode);
 	}
-	
+
 }

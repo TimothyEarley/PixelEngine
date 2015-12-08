@@ -10,9 +10,7 @@ public class ComponentSizeListener implements ComponentListener {
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		for (ResizedAction resizedAction : listeners) {
-			resizedAction.onResize();
-		}
+		listeners.forEach(de.earley.pixelengine.window.input.ResizedAction::onResize);
 	}
 
 	@Override

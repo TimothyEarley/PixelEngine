@@ -6,24 +6,21 @@ package de.earley.pixelengine.game.util;
 public class GameSettings {
 
 	/**
-	 * Nanoseconds between updates
-	 */
-	private int deltaUpdate;
-
-	/**
 	 * If game is running to slowly, make sure we actually render from time to time
 	 */
 	public int maxUpdatesBeforeRender;
-
 	/**
 	 * If true, should render when not focused
 	 */
 	public boolean alwaysRender;
-
 	/**
 	 * If true, only render after new update
 	 */
 	public boolean limitFPS;
+	/**
+	 * Nanoseconds between updates
+	 */
+	private int deltaUpdate;
 
 	public GameSettings() {
 		// defaults

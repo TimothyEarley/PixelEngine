@@ -1,24 +1,42 @@
 package de.earley.pixelengine.sprite;
 
 
+import java.util.ArrayList;
+
 public class Animation implements Drawable {
 
-	private Sprite[] frameSprites;
-	private int frame, framesCount, deltaPerFrame, timeSinceLastFrame;
-	
+	private final static ArrayList<Animation> animations = new ArrayList<>();
+
+	public static void updateAll(long delta) {
+		for (Animation anim : animations) {
+			anim.update(delta);
+		}
+	}
+
+	private final Sprite[] frameSprites;
+
+	// times in ns
+	private int frame, timeSinceLastFrame;
+	private final int framesCount, deltaPerFrame;
+
+	public Animation(Sprite[] frames) {
+		this(frames, 200000000);
+	}
+
 	public Animation(Sprite[] frames, int deltaPerFrame) {
 		this.frameSprites = frames;
 		this.framesCount = frames.length;
 		this.deltaPerFrame = deltaPerFrame;
+
+		animations.add(this);
 	}
-	
-	public Animation(Sprite[] frames) {
-		this(frames, 24);
-		//TODO adjust 24
+
+	public Sprite getFrame() {
+		return frameSprites[frame];
 	}
 
 	@Override
-	public int getWidth() {	
+	public int getWidth() {
 		return frameSprites[frame].getWidth();
 	}
 
@@ -26,8 +44,13 @@ public class Animation implements Drawable {
 	public int getHeight() {
 		return frameSprites[frame].getHeight();
 	}
-	
-	public void update(int delta) {
+
+	@Override
+	public int getPixel(int x, int y) {
+		return frameSprites[frame].getPixel(x, y);
+	}
+
+	public void update(long delta) {
 		timeSinceLastFrame += delta;
 		if (this.timeSinceLastFrame >= deltaPerFrame) {
 			nextFrame();
@@ -39,11 +62,5 @@ public class Animation implements Drawable {
 		frame = (frame + 1) % framesCount;
 	}
 
-	@Override
-	public int getPixel(int x, int y) {
-		return frameSprites[frame].getPixel(x, y);
-	}
-	
-	
-	
+
 }

@@ -1,15 +1,16 @@
 package de.earley.pixelengine.window.ui;
 
+import de.earley.pixelengine.game.states.Layer;
 import de.earley.pixelengine.vector.Vector2i;
-import java.awt.Graphics;
+
+import java.awt.*;
 
 /**
- *
  * @author timmy
  */
-public abstract class UIElement {
+public abstract class UIElement extends Layer {
 
-    Vector2i position;
-    public abstract  void render(Graphics g);
-    
+	protected Vector2i position;
+
+	public abstract void render(Graphics g);
 }

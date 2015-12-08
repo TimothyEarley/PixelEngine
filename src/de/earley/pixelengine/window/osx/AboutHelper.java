@@ -1,10 +1,9 @@
 package de.earley.pixelengine.window.osx;
 
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
 import com.apple.eawt.AboutHandler;
 import com.apple.eawt.AppEvent.AboutEvent;
+
+import javax.swing.*;
 
 public class AboutHelper implements AboutHandler {
 

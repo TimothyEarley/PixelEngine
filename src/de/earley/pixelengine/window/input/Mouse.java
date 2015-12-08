@@ -1,12 +1,12 @@
 package de.earley.pixelengine.window.input;
 
-import java.awt.MouseInfo;
+import de.earley.pixelengine.util.Range;
+import de.earley.pixelengine.vector.Vector2f;
+
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
-import de.earley.pixelengine.util.Range;
-import de.earley.pixelengine.vector.Vector2f;
 
 public class Mouse implements MouseListener, MouseMotionListener {
 
@@ -25,19 +25,11 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	public boolean didButtonClick(int buttonNumber) {
-		if (Range.isInRangeExclusive(buttonNumber, -1, buttonClick.length)) {
-			return buttonClick[buttonNumber];
-		} else {
-			return false;
-		}
+		return Range.isInRangeExclusive(buttonNumber, -1, buttonClick.length) && buttonClick[buttonNumber];
 	}
 
 	public boolean isButtonDown(int buttonNumber) {
-		if (Range.isInRangeExclusive(buttonNumber, -1, button.length)) {
-			return button[buttonNumber];
-		} else {
-			return false;
-		}
+		return Range.isInRangeExclusive(buttonNumber, -1, button.length) && button[buttonNumber];
 	}
 
 	@Override

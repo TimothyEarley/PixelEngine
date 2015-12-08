@@ -6,29 +6,28 @@ import de.earley.pixelengine.vector.Vector2i;
 import de.earley.pixelengine.window.render.Screen;
 
 public class Tile {
-    
-    private Drawable drawable;
-    private boolean solid;
-    private String name;
 
-    public Tile(Drawable drawable, boolean solid, String name) {
-	this.drawable = drawable;
-	this.solid = solid;
-	this.name = name;
-    }
+	private Drawable drawable;
+	private boolean solid;
+	private String name;
 
-    public void render(Screen screen, Vector2i pos) {
-	screen.renderDrawable(pos.x, pos.y, drawable);
-    }
+	public Tile(Drawable drawable, boolean solid, String name) {
+		this.drawable = drawable;
+		this.solid = solid;
+		this.name = name;
+	}
 
-    boolean canMove(Entity e) {
-	return !solid;
-    }
+	public void render(Screen screen, Vector2i pos) {
+		screen.renderDrawable(pos.x, pos.y, drawable);
+	}
 
-    @Override
-    public String toString() {
-	return name;
-    }
-    
-    
+	public boolean canMove(Entity e) {
+		return !solid;
+	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
+
 }

@@ -6,9 +6,8 @@
 package com.apple.eawt.AppEvent;
 
 /**
- *
  * @author timmy
  */
 public class AboutEvent {
-    
+
 }

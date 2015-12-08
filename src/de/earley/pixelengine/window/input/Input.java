@@ -1,22 +1,20 @@
 package de.earley.pixelengine.window.input;
 
 
-
-
 public class Input {
 
 	public Keyboard keyboard;
 	public Mouse mouse;
-	public Focus focus;
 	public ComponentSizeListener component;
-	
+	public FocusListenerImpl focus;
+
 	public Input() {
 		keyboard = new Keyboard();
 		mouse = new Mouse();
-		focus = new Focus();
 		component = new ComponentSizeListener();
+		focus = new FocusListenerImpl();
 	}
-	
+
 	/**
 	 * Handles the click events and typed
 	 */
@@ -24,5 +22,4 @@ public class Input {
 		keyboard.poll();
 		mouse.poll();
 	}
-
 }

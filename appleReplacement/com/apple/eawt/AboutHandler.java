@@ -8,11 +8,10 @@ package com.apple.eawt;
 import com.apple.eawt.AppEvent.AboutEvent;
 
 /**
- *
  * @author timmy
  */
 public interface AboutHandler {
 
-    public void handleAbout(AboutEvent e);
+	void handleAbout(AboutEvent e);
 
 }

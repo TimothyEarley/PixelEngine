@@ -2,10 +2,10 @@ package de.earley.pixelengine.sprite;
 
 public interface Drawable {
 
-	public abstract int getWidth();
+	int getWidth();
 
-	public abstract int getHeight();
+	int getHeight();
 
-	public abstract int getPixel(int x, int y);
+	int getPixel(int x, int y);
 
 }

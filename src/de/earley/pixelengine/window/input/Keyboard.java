@@ -1,9 +1,9 @@
 package de.earley.pixelengine.window.input;
 
+import de.earley.pixelengine.util.Range;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
-import de.earley.pixelengine.util.Range;
 
 public class Keyboard implements KeyListener {
 
@@ -15,25 +15,21 @@ public class Keyboard implements KeyListener {
 			keysTyped[i] = false;
 		}
 	}
-	
+
 	public boolean isKeyDown(int code) {
-		if (Range.isInRangeExclusive(code, -1, keys.length))
-			return keys[code];
-		else
-			return false;
+		return Range.isInRangeExclusive(code, -1, keys.length) && keys[code];
 	}
 
 
 	public boolean didKeyType(int code) {
-		if (Range.isInRangeExclusive(code, -1, keysTyped.length))
-			return keysTyped[code];
-		else
-			return false;
+		return Range.isInRangeExclusive(code, -1, keysTyped.length) && keysTyped[code];
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		keysTyped[e.getExtendedKeyCode()] = true;
+		// e.getKeyCode() always returns 0. :|
+		int code = KeyEvent.getExtendedKeyCodeForChar(e.getKeyChar());
+		keysTyped[code] = true;
 	}
 
 	@Override
