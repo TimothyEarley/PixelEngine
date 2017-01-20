@@ -1,0 +1,2 @@
+# PixelEngine
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1ce77daeb39a46ab8079b5f81e53061a)](https://www.codacy.com/app/TimothyEarley/PixelEngine?utm_source=github.com&utm_medium=referral&utm_content=TimothyEarley/PixelEngine&utm_campaign=badger)
